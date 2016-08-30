@@ -14,9 +14,15 @@ class App extends React.Component {
         this.logoutCallback = this.logoutCallback.bind(this);
     }
 
+    componentWillMount() {
+        let username = localStorage.getItem('username') || null;
+        this.setState({username: username});
+    }
+
     loginCallback(username) {
         // TODO: request to API
         this.setState({username: username});
+        localStorage.setItem('username', username);
     }
 
     logoutCallback() {
