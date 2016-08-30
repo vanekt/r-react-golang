@@ -14,7 +14,7 @@ export default class WS {
         };
 
         emitter.on(WS.SEND_MSG_EVENT, (data) => {
-            console.log(data);
+            this.ws.send(JSON.stringify(data));
         });
     }
     

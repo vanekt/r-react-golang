@@ -7,25 +7,44 @@ const
     clients = [];
 
 webSocketServer.on('connection', (ws) => {
-    let id = clients.length;
-    clients[id] = ws;
-    console.log('New connection: ID=' + id);
-    clients[id].send('Hi! Your ID: ' + id);
+    let id = clients.length,
+        newConnectionMsg = 'New connection: ID=' + id;
 
-    for (let key in clients) {
-        if (key != id) {
-            clients[key].send('New user: ' + id);
-        }
-    }
+    clients[id] = ws;
+    clients[id].send(JSON.stringify({
+        type: 'system',
+        text: newConnectionMsg
+    }));
+
+    console.log(newConnectionMsg);
+
+    broadcast({
+        type: 'system',
+        text: 'New user: ' + id
+    }, id);
 
     ws.on('close', () => {
         delete clients[id];
-        console.log('Connection closed for ' + id);
+        let closeConnectionMsg = 'Connection closed for ' + id;
 
-        for (let key in clients) {
-            if (key != id) {
-                clients[key].send('Connection closed for ID=' + id);
-            }
-        }
+        console.log(closeConnectionMsg);
+
+        broadcast({
+            type: 'system',
+            text: closeConnectionMsg
+        }, id);
+    });
+
+    ws.on('message', (data) => {
+        let msgData = JSON.parse(data);
+        broadcast(msgData);
     });
 });
+
+function broadcast(messageObj, excludeKey) {
+    for (let key in clients) {
+        if (typeof excludeKey === 'undefined' || key != excludeKey) {
+            clients[key].send(JSON.stringify(messageObj));
+        }
+    }
+}

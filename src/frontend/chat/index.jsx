@@ -49,8 +49,9 @@ export default class ChatView extends React.Component {
         let message = this.state.message;
 
         emitter.emit(WS.SEND_MSG_EVENT, {
+            type: 'chat',
             username: this.props.username,
-            message: message
+            text: message
         });
 
         this.setState({message: ''});
