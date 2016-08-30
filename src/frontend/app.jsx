@@ -1,33 +1,42 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import LoginView from './login'
+import WS from './ws'
+import emitter from './emitter'
 
 class App extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            username: null
+            username: null,
+            ws: null
         };
 
         this.loginCallback = this.loginCallback.bind(this);
         this.logoutCallback = this.logoutCallback.bind(this);
+        this._wsInit = this._wsInit.bind(this);
+        this._wsDestroy = this._wsDestroy.bind(this);
     }
 
     componentWillMount() {
         let username = localStorage.getItem('username') || null;
-        this.setState({username: username});
+        this.setState({username: username}, () => this._wsInit());
     }
 
     loginCallback(username) {
         // TODO: request to API
-        this.setState({username: username});
-        localStorage.setItem('username', username);
+        this.setState({username: username}, () => {
+            localStorage.setItem('username', username);
+            this._wsInit();
+        });
     }
 
     logoutCallback() {
-        this.setState({username: null});
         localStorage.removeItem('username');
+        this.state.ws.destroy();
+        this.setState({username: null});
+        this._wsDestroy();
     }
 
     render() {
@@ -40,6 +49,25 @@ class App extends React.Component {
                 />
             </div>
         );
+    }
+
+    _wsInit() {
+        if (null === this.state.username) {
+            return;
+        }
+
+        this.setState({ws: new WS()}, () => {
+            this.state.ws.init();
+        });
+
+        emitter.on('wsMessage', (data) => {
+            console.log(data);
+        });
+    }
+
+    _wsDestroy() {
+        this.setState({ws: null});
+        emitter.removeAllListeners('wsMessage');
     }
 }
 
