@@ -27,6 +27,7 @@ class App extends React.Component {
 
     logoutCallback() {
         this.setState({username: null});
+        localStorage.removeItem('username');
     }
 
     render() {
