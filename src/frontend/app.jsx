@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import LoginView from './login'
 import ChatView from './chat'
-import WS from './ws'
+import WS from './common/ws'
 
 class App extends React.Component {
     constructor() {

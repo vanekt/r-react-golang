@@ -1,6 +1,6 @@
 import React from 'react'
-import emitter from '../emitter'
-import WS from '../ws'
+import emitter from '../common/emitter'
+import WS from '../common/ws'
 
 export default class ChatView extends React.Component {
     constructor() {
