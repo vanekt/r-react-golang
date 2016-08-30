@@ -20,5 +20,12 @@ webSocketServer.on('connection', (ws) => {
 
     ws.on('close', () => {
         delete clients[id];
+        console.log('Connection closed for ' + id);
+
+        for (let key in clients) {
+            if (key != id) {
+                clients[key].send('Connection closed for ID=' + id);
+            }
+        }
     });
 });
