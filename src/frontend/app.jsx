@@ -64,14 +64,14 @@ class App extends React.Component {
             this.state.ws.init();
         });
 
-        emitter.on('wsMessage', (data) => {
+        emitter.on('receiveMessage', (data) => {
             console.log(data);
         });
     }
 
     _wsDestroy() {
         this.setState({ws: null});
-        emitter.removeAllListeners('wsMessage');
+        emitter.removeAllListeners('receiveMessage');
     }
 }
 

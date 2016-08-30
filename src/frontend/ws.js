@@ -9,11 +9,16 @@ export default class WS {
 
     init() {
         this.ws.onmessage = function (e) {
-            emitter.emit('wsMessage', e.data);
+            emitter.emit('receiveMessage', e.data);
         };
+
+        emitter.on('sendMessage', (data) => {
+            console.log(data);
+        });
     }
     
     destroy() {
         this.ws.close();
+        emitter.removeAllListeners('sendMessage');
     }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import emitter from '../emitter'
 
 export default class ChatView extends React.Component {
     constructor() {
@@ -38,7 +39,11 @@ export default class ChatView extends React.Component {
     handleFormSubmit(e) {
         e.preventDefault();
         let message = this.state.message;
-        console.log(message);
+
+        emitter.emit('sendMessage', {
+            username: this.props.username,
+            message: message
+        });
 
         this.setState({message: ''});
     }
