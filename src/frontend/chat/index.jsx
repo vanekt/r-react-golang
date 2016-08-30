@@ -14,6 +14,13 @@ export default class ChatView extends React.Component {
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
+    componentWillMount() {
+        // TODO: get last messages (API?)
+        emitter.on(WS.RECEIVE_MSG_EVENT, (data) => {
+            console.log(data);
+        });
+    }
+
     render() {
         let username = this.props.username;
         if (null === username) {
@@ -47,5 +54,9 @@ export default class ChatView extends React.Component {
         });
 
         this.setState({message: ''});
+    }
+
+    componentWillUnmount() {
+        emitter.removeAllListeners(WS.RECEIVE_MSG_EVENT);
     }
 }

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import LoginView from './login'
 import ChatView from './chat'
 import WS from './ws'
-import emitter from './emitter'
 
 class App extends React.Component {
     constructor() {
@@ -50,6 +49,7 @@ class App extends React.Component {
                 />
                 <ChatView
                     username={this.state.username}
+                    ws={this.state.ws}
                 />
             </div>
         );
@@ -63,15 +63,10 @@ class App extends React.Component {
         this.setState({ws: new WS()}, () => {
             this.state.ws.init();
         });
-
-        emitter.on(WS.RECEIVE_MSG_EVENT, (data) => {
-            console.log(data);
-        });
     }
 
     _wsDestroy() {
         this.setState({ws: null});
-        emitter.removeAllListeners(WS.RECEIVE_MSG_EVENT);
     }
 }
 
