@@ -1,5 +1,6 @@
 import React from 'react'
 import emitter from '../emitter'
+import WS from '../ws'
 
 export default class ChatView extends React.Component {
     constructor() {
@@ -40,7 +41,7 @@ export default class ChatView extends React.Component {
         e.preventDefault();
         let message = this.state.message;
 
-        emitter.emit('sendMessage', {
+        emitter.emit(WS.SEND_MSG_EVENT, {
             username: this.props.username,
             message: message
         });
