@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import LoginView from './login'
+import ChatView from './chat'
 import WS from './ws'
 import emitter from './emitter'
 
@@ -46,6 +47,9 @@ class App extends React.Component {
                     username={this.state.username}
                     loginCallback={this.loginCallback}
                     logoutCallback={this.logoutCallback}
+                />
+                <ChatView
+                    username={this.state.username}
                 />
             </div>
         );
