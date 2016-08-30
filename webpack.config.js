@@ -22,7 +22,7 @@ module.exports = {
         loaders: [
             {
                 test: /.jsx?$/,
-                include: './src/frontend/',
+                exclude: /node_modules/,
                 loader: 'babel-loader'
             }
         ]
