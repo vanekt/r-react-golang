@@ -1,13 +1,6 @@
 'use strict';
 
-import myEmitter from ''
-
-myEmitter.on('event', () => {
-    console.log('an event occurred!');
-});
-
-myEmitter.emit('event');
-
+import emitter from './emitter'
 
 export default class WS {
     constructor(host = 'localhost', port = 8081) {
@@ -16,9 +9,11 @@ export default class WS {
 
     init() {
         this.ws.onmessage = function (e) {
-            var newP = document.createElement('p');
-            newP.innerHTML = e.data;
-            document.body.appendChild(newP);
+            emitter.emit('wsMessage', e.data);
         };
+    }
+    
+    destroy() {
+        this.ws.close();
     }
 }
