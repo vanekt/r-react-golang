@@ -8,7 +8,8 @@ export default class ChatView extends React.Component {
 
         this.state = {
             message: '',
-            messages: []
+            messages: [],
+            loading: false
         };
 
         this.handleMessage = this.handleMessage.bind(this);
@@ -18,28 +19,45 @@ export default class ChatView extends React.Component {
     }
 
     componentWillMount() {
-        // TODO: get last messages (API?)
-        emitter.on(WS.RECEIVE_MSG_EVENT, (data) => {
-            let msg = JSON.parse(data);
-            switch (msg.type) {
-                case 'chat':
-                    this.addMessage(msg);
-                    break;
-                default:
-                    console.log(msg);
-            }
+        const promise = new Promise((resolve, reject) => {
+            emitter.once(WS.RECEIVE_LAST_MSGS_EVENT, (data) => {
+                resolve(data.items);
+            });
+
+            setTimeout(() => reject('Can not get message list'), 10000);
+        });
+
+        promise.then(
+            messages => {
+                this.setState({'messages': messages});
+            },
+            error => console.log(error)
+        ).then(() => {
+            emitter.on(WS.RECEIVE_MSG_EVENT, (msg) => {
+                switch (msg.type) {
+                    case 'chat':
+                        this.addMessage(msg);
+                        break;
+                    default:
+                        console.log(msg); // system message
+                }
+            });
         });
     }
 
     render() {
-        let username = this.props.username;
-        if (null === username) {
+        let username = this.props.username,
+            ws = this.props.ws;
+
+        if (null === username || null === ws) {
             return <div></div>
         }
 
         return (
             <div>
-                <ul>{this.renderMessageList()}</ul>
+                <div>
+                    <ul>{this.renderMessageList()}</ul>
+                </div>
                 <form onSubmit={this.handleFormSubmit}>
                     <input
                         value={this.state.message}

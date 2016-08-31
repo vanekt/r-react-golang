@@ -38,9 +38,18 @@ webSocketServer.on('connection', (ws) => {
 
     ws.on('message', (data) => {
         let msgData = JSON.parse(data);
-        broadcast(msgData);
-        messages.push(msgData);
-        console.log('Count messages: ' + messages.length);
+        switch (msgData.type) {
+            case 'get_last_messages':
+                clients[id].send(JSON.stringify({
+                    type: 'last_messages_list',
+                    items: messages
+                }));
+                break;
+            default:
+                broadcast(msgData);
+                messages.push(msgData);
+                console.log('Count messages: ' + messages.length);
+        }
     });
 });
 
