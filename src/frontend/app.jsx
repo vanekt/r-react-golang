@@ -73,6 +73,7 @@ class App extends React.Component {
     }
 
     _wsClose() {
+        this.state.ws.close();
         this.setState({ws: null});
         emitter.removeAllListeners(WS.CONNECTION_CLOSED);
     }
