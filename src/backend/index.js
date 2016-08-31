@@ -4,7 +4,8 @@ var WebSocketServer = require('ws');
 
 const
     webSocketServer = new WebSocketServer.Server({port: 8081}),
-    clients = [];
+    clients = [],
+    messages = [];
 
 webSocketServer.on('connection', (ws) => {
     let id = clients.length,
@@ -38,13 +39,21 @@ webSocketServer.on('connection', (ws) => {
     ws.on('message', (data) => {
         let msgData = JSON.parse(data);
         broadcast(msgData);
+        messages.push(msgData);
+        console.log('Count messages: ' + messages.length);
     });
 });
 
 function broadcast(messageObj, excludeKey) {
-    for (let key in clients) {
-        if (typeof excludeKey === 'undefined' || key != excludeKey) {
-            clients[key].send(JSON.stringify(messageObj));
+    var debugKey = null;
+    try {
+        for (let key in clients) {
+            debugKey = key;
+            if (typeof excludeKey === 'undefined' || key != excludeKey) {
+                clients[key].send(JSON.stringify(messageObj));
+            }
         }
+    } catch (e) {
+        console.log('Broadcast error for ID=' + debugKey + ': ' + e.message);
     }
 }
