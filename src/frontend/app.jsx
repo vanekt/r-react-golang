@@ -17,7 +17,7 @@ class App extends React.Component {
         this.loginCallback = this.loginCallback.bind(this);
         this.logoutCallback = this.logoutCallback.bind(this);
         this._wsInit = this._wsInit.bind(this);
-        this._wsDestroy = this._wsDestroy.bind(this);
+        this._wsClose = this._wsClose.bind(this);
     }
 
     componentWillMount() {
@@ -35,9 +35,8 @@ class App extends React.Component {
 
     logoutCallback() {
         localStorage.removeItem('username');
-        this.state.ws.destroy();
         this.setState({username: null});
-        this._wsDestroy();
+        this._wsClose();
     }
 
     render() {
@@ -62,14 +61,20 @@ class App extends React.Component {
         }
 
         this.setState({ws: new WS()}, () => {
-            this.state.ws.init(() => {
-                emitter.emit(WS.SEND_MSG_EVENT, {type: 'get_last_messages'});
-            });
+            this.state.ws.init();
+        });
+
+        emitter.on(WS.CONNECTION_CLOSED, (e) => {
+            if (e.code !== 1000 && null !== this.state.ws) {
+                console.log('Trying reconnect...');
+                this.state.ws.init();
+            }
         });
     }
 
-    _wsDestroy() {
+    _wsClose() {
         this.setState({ws: null});
+        emitter.removeAllListeners(WS.CONNECTION_CLOSED);
     }
 }
 

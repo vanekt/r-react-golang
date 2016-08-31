@@ -20,6 +20,10 @@ export default class ChatView extends React.Component {
 
     componentWillMount() {
         const promise = new Promise((resolve, reject) => {
+            emitter.once(WS.CONNECTION_ESTABLISHED, (data) => {
+                emitter.emit(WS.SEND_MSG_EVENT, {type: 'get_last_messages'});
+            });
+
             emitter.once(WS.RECEIVE_LAST_MSGS_EVENT, (data) => {
                 resolve(data.items);
             });
