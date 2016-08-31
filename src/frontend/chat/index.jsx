@@ -34,7 +34,7 @@ export default class ChatView extends React.Component {
             error => console.log(error)
         ).then(() => {
             this.setState({'loading': false});
-            
+
             emitter.on(WS.RECEIVE_MSG_EVENT, (msg) => {
                 switch (msg.type) {
                     case 'chat':

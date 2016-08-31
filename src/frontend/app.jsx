@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import LoginView from './login'
 import ChatView from './chat'
+import emitter from './common/emitter'
 import WS from './common/ws'
 
 class App extends React.Component {
@@ -61,7 +62,9 @@ class App extends React.Component {
         }
 
         this.setState({ws: new WS()}, () => {
-            this.state.ws.init();
+            this.state.ws.init(() => {
+                emitter.emit(WS.SEND_MSG_EVENT, {type: 'get_last_messages'});
+            });
         });
     }
 

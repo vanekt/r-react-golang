@@ -8,7 +8,7 @@ export default class WS {
         this.ws = new WebSocket('ws://' + host + ':' + port);
     }
 
-    init() {
+    init(callback) {
         this.ws.onmessage = function (e) {
             let msg = JSON.parse(e.data);
             switch (msg.type) {
@@ -25,7 +25,7 @@ export default class WS {
         });
 
         this.ws.onopen = function (e) {
-            emitter.emit(WS.SEND_MSG_EVENT, {type: 'get_last_messages'});
+            callback();
         };
     }
     
