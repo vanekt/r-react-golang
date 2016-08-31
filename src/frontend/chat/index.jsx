@@ -1,4 +1,5 @@
 import React from 'react'
+import MessageList from './message-list'
 import emitter from '../common/emitter'
 import WS from '../common/ws'
 
@@ -9,13 +10,12 @@ export default class ChatView extends React.Component {
         this.state = {
             message: '',
             messages: [],
-            loading: false
+            loading: true
         };
 
         this.handleMessage = this.handleMessage.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.addMessage = this.addMessage.bind(this);
-        this.renderMessageList = this.renderMessageList.bind(this);
     }
 
     componentWillMount() {
@@ -33,6 +33,8 @@ export default class ChatView extends React.Component {
             },
             error => console.log(error)
         ).then(() => {
+            this.setState({'loading': false});
+            
             emitter.on(WS.RECEIVE_MSG_EVENT, (msg) => {
                 switch (msg.type) {
                     case 'chat':
@@ -55,9 +57,10 @@ export default class ChatView extends React.Component {
 
         return (
             <div>
-                <div>
-                    <ul>{this.renderMessageList()}</ul>
-                </div>
+                <MessageList
+                    messages={this.state.messages}
+                    loading={this.state.loading}
+                />
                 <form onSubmit={this.handleFormSubmit}>
                     <input
                         value={this.state.message}
@@ -67,21 +70,6 @@ export default class ChatView extends React.Component {
                 </form>
             </div>
         );
-    }
-
-    renderMessageList() {
-        var items = [];
-
-        for (let i = 0; i < this.state.messages.length; i++) {
-            var item = this.state.messages[i];
-            items.push(
-                <li key={i}>
-                    <strong>{item.username}:</strong> {item.text}
-                </li>
-            );
-        }
-
-        return items;
     }
 
     addMessage(data) {
