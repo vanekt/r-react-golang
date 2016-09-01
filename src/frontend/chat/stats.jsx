@@ -29,8 +29,14 @@ export default class Stats extends React.Component {
     }
 
     renderTop3Users(data) {
-        var items = [];
-        for (let i = 0; i < data.length; i++) {
+        var items = [],
+            length = data.length;
+
+        if (length < 1) {
+            return <div>No data</div>
+        }
+
+        for (let i = 0; i < length; i++) {
             items.push(<li key={i}>{data[i].username}: {data[i].count}</li>);
         }
 
