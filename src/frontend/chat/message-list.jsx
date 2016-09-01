@@ -13,6 +13,9 @@ export default class MessageList extends React.Component {
     componentWillUpdate() {
         var node = ReactDOM.findDOMNode(this);
         this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+        console.log(this.scrollTop);
+        console.log(this.offsetHeight);
+        console.log(this.scrollHeight);
         console.log(this.shouldScrollBottom);
     }
 
