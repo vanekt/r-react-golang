@@ -10,6 +10,7 @@ export default class ChatView extends React.Component {
 
         this.state = {
             message: '',
+            isValidMessage: true,
             messages: [],
             stats: null,
             loading: true
@@ -81,6 +82,7 @@ export default class ChatView extends React.Component {
                     <input
                         value={this.state.message}
                         onChange={this.handleMessage}
+                        className={this.state.isValidMessage ? "" : "error"}
                     />
                     <button type="submit">Send</button>
                 </form>
@@ -110,6 +112,12 @@ export default class ChatView extends React.Component {
         e.preventDefault();
         let message = this.state.message;
 
+        if (message.length < 20) {
+            this.setState({isValidMessage: false});
+            return;
+        }
+
+        this.setState({isValidMessage: true});
         emitter.emit(WS.SEND_MSG_EVENT, {
             type: 'chat',
             username: this.props.username,
@@ -117,6 +125,7 @@ export default class ChatView extends React.Component {
         });
 
         this.setState({message: ''});
+
     }
 
     componentWillUnmount() {
