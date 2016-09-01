@@ -1,5 +1,6 @@
 import React from 'react'
 import MessageList from './message-list'
+import Stats from './stats'
 import emitter from '../common/emitter'
 import WS from '../common/ws'
 
@@ -10,6 +11,7 @@ export default class ChatView extends React.Component {
         this.state = {
             message: '',
             messages: [],
+            stats: null,
             loading: true
         };
 
@@ -25,15 +27,18 @@ export default class ChatView extends React.Component {
             });
 
             emitter.once(WS.RECEIVE_LAST_MSGS_EVENT, (data) => {
-                resolve(data.items);
+                resolve(data);
             });
 
             setTimeout(() => reject('Can not get message list'), 10000);
         });
 
         promise.then(
-            messages => {
-                this.setState({'messages': messages});
+            data => {
+                this.setState({
+                    'messages': data.items,
+                    'stats': data.stats
+                });
             },
             error => console.log(error)
         ).then(() => {
@@ -72,13 +77,18 @@ export default class ChatView extends React.Component {
                     />
                     <button type="submit">Send</button>
                 </form>
+                <Stats stats={this.state.stats} />
             </div>
         );
     }
 
     addMessage(data) {
+        let stats = data.stats;
+        delete data.stats;
+
         this.setState({
-            messages: [...this.state.messages, data]
+            messages: [...this.state.messages, data],
+            stats: stats
         });
     }
 
