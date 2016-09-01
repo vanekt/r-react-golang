@@ -50,7 +50,7 @@ export default class MessageList extends React.Component {
     }
 
     getDateBlock(timestamp) {
-        let dateStr = moment(timestamp).format('hh:mm:ss');
+        let dateStr = moment(timestamp).format('HH:mm:ss');
 
         return <span className="chat-list__item__datetime">[{dateStr}]</span>
     }
