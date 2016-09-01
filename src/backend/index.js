@@ -46,6 +46,7 @@ webSocketServer.on('connection', (ws) => {
                 }));
                 break;
             default:
+                msgData.timestamp = Date.now();
                 broadcast(msgData);
                 messages.push(msgData);
                 console.log('Count messages: ' + messages.length);
