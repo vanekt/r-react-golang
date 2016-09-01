@@ -11,17 +11,21 @@ export default class Stats extends React.Component {
         }
 
         return (
-            <div>
-                <h3>Stats</h3>
-                <ul>Total: {stats.total}</ul>
-                <ul>My total: {stats.myMessagesCountTotal}</ul>
-                <ul>My last 5 min: {stats.myMessagesCountLast5Minutes}</ul>
-                <div>
-                    <p>Top 3 users all time:</p>
+            <div className="row">
+                <div className="col-md-4">
+                    <h3>Stats</h3>
+                    <ul>
+                        <li>Total: {stats.total}</li>
+                        <li>My total: {stats.myMessagesCountTotal}</li>
+                        <li>My last 5 min: {stats.myMessagesCountLast5Minutes}</li>
+                    </ul>
+                </div>
+                <div className="col-md-4">
+                    <h3>Top 3 users all time:</h3>
                     {this.renderTop3Users(stats.top3UsersAllTime)}
                 </div>
-                <div>
-                    <p>Top 3 users last 5 minutes:</p>
+                <div className="col-md-4">
+                    <h3>Top 3 users last 5 minutes:</h3>
                     {this.renderTop3Users(stats.top3UsersLast5Minutes)}
                 </div>
             </div>

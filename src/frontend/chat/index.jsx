@@ -79,14 +79,26 @@ export default class ChatView extends React.Component {
                     loading={this.state.loading}
                 />
                 <form onSubmit={this.handleFormSubmit}>
-                    <input
-                        value={this.state.message}
-                        onChange={this.handleMessage}
-                        className={this.state.isValidMessage ? "" : "error"}
-                    />
-                    <button type="submit">Send</button>
+                    <div className={"input-group " + (this.state.isValidMessage ? "" : "has-error")}>
+                        <span className="input-group-addon">
+                            {username}
+                            <i
+                                title="Exit"
+                                className="glyphicon glyphicon-log-out"
+                                onClick={this.props.logoutCallback}
+                            />
+                        </span>
+                        <input
+                            value={this.state.message}
+                            onChange={this.handleMessage}
+                            className="form-control"
+                        />
+                        <span className="input-group-btn">
+                            <button className="btn btn-primary" type="submit">Send</button>
+                        </span>
+                    </div>
                 </form>
-                <Stats 
+                <Stats
                     stats={this.state.stats}
                     loading={this.state.loading}
                 />

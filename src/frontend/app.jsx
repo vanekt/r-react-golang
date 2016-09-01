@@ -41,15 +41,15 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="container">
                 <LoginView
                     username={this.state.username}
                     loginCallback={this.loginCallback}
-                    logoutCallback={this.logoutCallback}
                 />
                 <ChatView
                     username={this.state.username}
                     ws={this.state.ws}
+                    logoutCallback={this.logoutCallback}
                 />
             </div>
         );

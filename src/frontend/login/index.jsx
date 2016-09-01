@@ -24,23 +24,26 @@ export default class LoginView extends React.Component {
     render() {
         let username = this.props.username;
         if (null !== username) {
-            return (
-                <div>
-                    Hello, {username}!
-                    <button onClick={this.props.logoutCallback}>Exit</button>
-                </div>
-            );
+            return <div></div>
         }
 
         return (
-            <div>
-                <form onSubmit={this.handleFormSubmit}>
-                    <input
-                        value={this.state.username}
-                        onChange={this.handleUsername}
-                    />
-                    <button type="submit">Log in</button>
-                </form>
+            <div className="row">
+                <div className="col-xs-3">
+                    <form onSubmit={this.handleFormSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="username">Username</label>
+                            <input
+                                className="form-control"
+                                id="username"
+                                placeholder="Enter your name"
+                                value={this.state.username}
+                                onChange={this.handleUsername}
+                            />
+                        </div>
+                        <button type="submit" className="btn btn-default">Log in</button>
+                    </form>
+                </div>
             </div>
         );
     }
