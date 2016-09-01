@@ -1,6 +1,14 @@
 $color-error: #a94442;
 $color-light-gray: #fafafa;
 
+.login-wrapper {
+  margin-top: 100px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  background-color: $color-light-gray;
+}
+
 .chat-form {
   &__log-out-btn {
     margin-left: 7px;

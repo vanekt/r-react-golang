@@ -29,8 +29,8 @@ export default class LoginView extends React.Component {
 
         return (
             <div className="row">
-                <div className="col-xs-3">
-                    <form onSubmit={this.handleFormSubmit}>
+                <div className="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
+                    <form onSubmit={this.handleFormSubmit} className="login-wrapper">
                         <div className="form-group">
                             <label htmlFor="username">Username</label>
                             <input
