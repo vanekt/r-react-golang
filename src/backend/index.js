@@ -105,7 +105,9 @@ function getTop3UsersAllTime(messages) {
         .pairs()
         .sortBy(1)
         .reverse()
-        .pluck(0)
+        .map(function(item) {
+            return {username: item[0], count: item[1]};
+        })
         .value();
 
     return result.slice(0, 3);
