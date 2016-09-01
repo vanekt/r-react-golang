@@ -13,6 +13,7 @@ export default class ChatFormView extends React.Component {
 
         this.handleMessage = this.handleMessage.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.onBlurHandler = this.onBlurHandler.bind(this);
     }
 
     render() {
@@ -33,6 +34,7 @@ export default class ChatFormView extends React.Component {
                         <input
                             value={this.state.message}
                             onChange={this.handleMessage}
+                            onBlur={this.onBlurHandler}
                             className="form-control"
                         />
                         <span className="input-group-btn">
@@ -71,5 +73,9 @@ export default class ChatFormView extends React.Component {
         });
 
         this.setState({message: ''});
+    }
+
+    onBlurHandler() {
+        this.setState({isValidMessage: true});
     }
 }
