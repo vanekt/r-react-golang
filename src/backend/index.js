@@ -42,13 +42,14 @@ webSocketServer.on('connection', (ws) => {
             case 'get_last_messages':
                 clients[id].send(JSON.stringify({
                     type: 'last_messages_list',
-                    items: messages
+                    items: messages,
+                    stats: getStatsById(id)
                 }));
                 break;
             default:
                 msgData.timestamp = Date.now();
-                broadcast(msgData);
                 messages.push(msgData);
+                broadcast(msgData);
                 console.log('Count messages: ' + messages.length);
         }
     });
@@ -60,10 +61,17 @@ function broadcast(messageObj, excludeKey) {
         for (let key in clients) {
             debugKey = key;
             if (typeof excludeKey === 'undefined' || key != excludeKey) {
+                messageObj.stats = getStatsById(key);
                 clients[key].send(JSON.stringify(messageObj));
             }
         }
     } catch (e) {
         console.log('Broadcast error for ID=' + debugKey + ': ' + e.message);
     }
+}
+
+function getStatsById(id) {
+    return {
+        'total': messages.length
+    };
 }
