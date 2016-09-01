@@ -11,10 +11,10 @@ export default class Stats extends React.Component {
         }
 
         return (
-            <div className="row">
+            <div className="row stats">
                 <div className="col-md-4">
                     <h3>Stats</h3>
-                    <ul>
+                    <ul className="stats__common">
                         <li>Total: {stats.total}</li>
                         <li>My total: {stats.myMessagesCountTotal}</li>
                         <li>My last 5 min: {stats.myMessagesCountLast5Minutes}</li>
@@ -44,6 +44,6 @@ export default class Stats extends React.Component {
             items.push(<li key={i}>{data[i].username}: {data[i].count}</li>);
         }
 
-        return <ul>{items}</ul>;
+        return <ol className="stats__top">{items}</ol>;
     }
 }
