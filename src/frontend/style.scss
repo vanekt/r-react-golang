@@ -1,0 +1,40 @@
+$color-error: #a94442;
+$color-light-gray: #fafafa;
+
+.chat-form {
+  &__log-out-btn {
+    margin-left: 7px;
+    cursor: pointer;
+  }
+
+  &__error-text {
+    color: $color-error;
+    display: none;
+
+    &--show {
+      display: block;
+    }
+  }
+}
+
+.chat-list {
+  padding: 5px 10px;
+  height: 400px;
+  overflow: auto;
+
+  &__item {
+    list-style: none;
+    &__datetime {
+      color: #999;
+      font-size: 0.9em;
+      padding-right: 7px;
+    }
+  }
+
+  &-wrapper {
+    background-color: $color-light-gray;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 15px 0;
+  }
+}

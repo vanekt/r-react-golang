@@ -78,13 +78,13 @@ export default class ChatView extends React.Component {
                     messages={this.state.messages}
                     loading={this.state.loading}
                 />
-                <form onSubmit={this.handleFormSubmit}>
+                <form onSubmit={this.handleFormSubmit} className="chat-form">
                     <div className={"input-group " + (this.state.isValidMessage ? "" : "has-error")}>
                         <span className="input-group-addon">
                             {username}
                             <i
                                 title="Exit"
-                                className="glyphicon glyphicon-log-out"
+                                className="glyphicon glyphicon-log-out chat-form__log-out-btn"
                                 onClick={this.props.logoutCallback}
                             />
                         </span>
@@ -97,6 +97,11 @@ export default class ChatView extends React.Component {
                             <button className="btn btn-primary" type="submit">Send</button>
                         </span>
                     </div>
+                    <span
+                        className={"chat-form__error-text " + (this.state.isValidMessage ? "" : "chat-form__error-text--show")}
+                    >
+                        Text must contain 20 and more symbols
+                    </span>
                 </form>
                 <Stats
                     stats={this.state.stats}

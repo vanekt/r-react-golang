@@ -14,8 +14,8 @@ export default class MessageList extends React.Component {
         }
 
         return (
-            <div>
-                <ul>{this.renderMessageList()}</ul>
+            <div className="chat-list-wrapper">
+                <ul className="chat-list">{this.renderMessageList()}</ul>
             </div>
         );
     }
@@ -26,7 +26,7 @@ export default class MessageList extends React.Component {
         for (let i = 0; i < this.props.messages.length; i++) {
             let item = this.props.messages[i];
             items.push(
-                <li key={i}>
+                <li key={i} className="chat-list__item">
                     {this.getDateBlock(item.timestamp)}<strong>{item.username}:</strong> {item.text}
                 </li>
             );
@@ -38,6 +38,6 @@ export default class MessageList extends React.Component {
     getDateBlock(timestamp) {
         let dateStr = moment(timestamp).format('h:mm:ss');
 
-        return <span>[{dateStr}]</span>
+        return <span className="chat-list__item__datetime">[{dateStr}]</span>
     }
 }
