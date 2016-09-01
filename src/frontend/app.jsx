@@ -4,6 +4,7 @@ import LoginView from './login'
 import ChatView from './chat'
 import emitter from './common/emitter'
 import WS from './common/ws'
+import { emulatePostJSON } from './common/rest'
 import './style.scss'
 
 class App extends React.Component {
@@ -27,11 +28,19 @@ class App extends React.Component {
     }
 
     loginCallback(username) {
-        // TODO: request to API
-        this.setState({username: username}, () => {
-            localStorage.setItem('username', username);
-            this._wsInit();
-        });
+        emulatePostJSON('/api/login', {
+            username: username
+        }).then(
+            response => {
+                this.setState({username: response.token}, () => {
+                    localStorage.setItem('username', username);
+                    this._wsInit();
+                });
+            },
+            error => {
+                console.log(error);
+            }
+        );
     }
 
     logoutCallback() {
