@@ -1,6 +1,7 @@
 'use strict';
 
-var WebSocketServer = require('ws');
+var WebSocketServer = require('ws'),
+    _ = require('lodash');
 
 const
     webSocketServer = new WebSocketServer.Server({port: 8081}),
@@ -39,7 +40,8 @@ webSocketServer.on('connection', (ws) => {
     ws.on('message', (data) => {
         let msgData = JSON.parse(data);
         switch (msgData.type) {
-            case 'get_last_messages':
+            case 'init':
+                clients[id].username = msgData.username;
                 clients[id].send(JSON.stringify({
                     type: 'last_messages_list',
                     items: messages,
@@ -61,7 +63,10 @@ function broadcast(messageObj, excludeKey) {
         for (let key in clients) {
             debugKey = key;
             if (typeof excludeKey === 'undefined' || key != excludeKey) {
-                messageObj.stats = getStatsById(key);
+                if ('chat' == messageObj.type) {
+                    messageObj.stats = getStatsById(key);
+                }
+
                 clients[key].send(JSON.stringify(messageObj));
             }
         }
@@ -71,7 +76,12 @@ function broadcast(messageObj, excludeKey) {
 }
 
 function getStatsById(id) {
+    const username = clients[id].username;
+
     return {
-        'total': messages.length
+        'total': messages.length,
+        'my_total': _.filter(messages, function(o) {
+            return o.username == username;
+        }).length
     };
 }

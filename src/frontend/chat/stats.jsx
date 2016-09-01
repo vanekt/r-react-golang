@@ -10,6 +10,7 @@ export default class Stats extends React.Component {
         return (
             <div>
                 <ul>Total: {stats.total}</ul>
+                <ul>My total: {stats.my_total}</ul>
             </div>
         );
     }
