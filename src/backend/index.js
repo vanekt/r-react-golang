@@ -1,7 +1,7 @@
 'use strict';
 
 var WebSocketServer = require('ws'),
-    _ = require('lodash');
+    _ = require('underscore');
 
 const
     webSocketServer = new WebSocketServer.Server({port: 8081}),
