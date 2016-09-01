@@ -2,8 +2,11 @@ import React from 'react'
 
 export default class Stats extends React.Component {
     render() {
-        const stats = this.props.stats;
-        if (null === stats) {
+        const
+            stats = this.props.stats,
+            loading = this.props.loading;
+
+        if (true === loading || null === stats) {
             return <div>Loading...</div>
         }
 

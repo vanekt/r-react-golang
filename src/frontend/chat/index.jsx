@@ -20,8 +20,10 @@ export default class ChatView extends React.Component {
         this.addMessage = this.addMessage.bind(this);
     }
 
-    componentWillMount() {
+    componentWillReceiveProps() {
         const promise = new Promise((resolve, reject) => {
+            this.setState({'loading': true});
+
             emitter.once(WS.CONNECTION_ESTABLISHED, () => {
                 emitter.emit(WS.SEND_MSG_EVENT, {
                     type: 'init',
@@ -46,16 +48,18 @@ export default class ChatView extends React.Component {
             error => console.log(error)
         ).then(() => {
             this.setState({'loading': false});
+        });
+    }
 
-            emitter.on(WS.RECEIVE_MSG_EVENT, (msg) => {
-                switch (msg.type) {
-                    case 'chat':
-                        this.addMessage(msg);
-                        break;
-                    default:
-                        console.log(msg); // system message
-                }
-            });
+    componentWillMount() {
+        emitter.on(WS.RECEIVE_MSG_EVENT, (msg) => {
+            switch (msg.type) {
+                case 'chat':
+                    this.addMessage(msg);
+                    break;
+                default:
+                    console.log(msg); // system message
+            }
         });
     }
 
@@ -80,7 +84,10 @@ export default class ChatView extends React.Component {
                     />
                     <button type="submit">Send</button>
                 </form>
-                <Stats stats={this.state.stats} />
+                <Stats 
+                    stats={this.state.stats}
+                    loading={this.state.loading}
+                />
             </div>
         );
     }
