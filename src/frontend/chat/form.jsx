@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import emitter from '../common/emitter'
 import WS from '../common/ws'
 
@@ -11,9 +12,16 @@ export default class ChatFormView extends React.Component {
             isValidMessage: true
         };
 
+        this.textInput = null;
         this.handleMessage = this.handleMessage.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.onBlurHandler = this.onBlurHandler.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.textInput !== null) {
+            ReactDOM.findDOMNode(this.textInput).focus();
+        }
     }
 
     render() {
@@ -36,6 +44,7 @@ export default class ChatFormView extends React.Component {
                             onChange={this.handleMessage}
                             onBlur={this.onBlurHandler}
                             className="form-control"
+                            ref={(ref) => this.textInput = ref}
                         />
                         <span className="input-group-btn">
                             <button className="btn btn-primary" type="submit">Send</button>
