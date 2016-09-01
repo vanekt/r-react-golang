@@ -45,7 +45,7 @@ webSocketServer.on('connection', (ws) => {
                 clients[id].send(JSON.stringify({
                     type: 'last_messages_list',
                     items: messages,
-                    stats: getStatsById(id)
+                    stats: getStatsById(id, messages)
                 }));
                 break;
             default:
@@ -64,7 +64,7 @@ function broadcast(messageObj, excludeKey) {
             debugKey = key;
             if (typeof excludeKey === 'undefined' || key != excludeKey) {
                 if ('chat' == messageObj.type) {
-                    messageObj.stats = getStatsById(key);
+                    messageObj.stats = getStatsById(key, messages);
                 }
 
                 clients[key].send(JSON.stringify(messageObj));
@@ -75,13 +75,25 @@ function broadcast(messageObj, excludeKey) {
     }
 }
 
-function getStatsById(id) {
+function getStatsById(id, messages) {
     const username = clients[id].username;
 
     return {
         'total': messages.length,
-        'my_total': _.filter(messages, function(o) {
-            return o.username == username;
-        }).length
+        'myMessagesCountTotal': getMyMessagesTotalCount(username, messages),
+        'myMessagesCountLast5Minutes' : getMyMessagesCountLast5Minutes(username, messages)
     };
+}
+
+function getMyMessagesTotalCount(username, messages) {
+    return _.filter(messages, function(o) {
+        return o.username == username;
+    }).length
+}
+
+function getMyMessagesCountLast5Minutes(username, messages) {
+    const matchTimestamp = Date.now() - 5 * 60 * 1000;
+    return _.filter(messages, function(o) {
+        return o.username == username && o.timestamp >= matchTimestamp;
+    }).length
 }

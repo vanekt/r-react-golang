@@ -13,7 +13,8 @@ export default class Stats extends React.Component {
         return (
             <div>
                 <ul>Total: {stats.total}</ul>
-                <ul>My total: {stats.my_total}</ul>
+                <ul>My total: {stats.myMessagesCountTotal}</ul>
+                <ul>My last 5 min: {stats.myMessagesCountLast5Minutes}</ul>
             </div>
         );
     }
