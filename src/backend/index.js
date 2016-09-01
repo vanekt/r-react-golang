@@ -82,7 +82,8 @@ function getStatsById(id, messages) {
         'total': messages.length,
         'myMessagesCountTotal': getMyMessagesTotalCount(username, messages),
         'myMessagesCountLast5Minutes': getMyMessagesCountLast5Minutes(username, messages),
-        'top3UsersAllTime': getTop3UsersAllTime(messages)
+        'top3UsersAllTime': getTop3UsersAllTime(messages),
+        'top3UsersLast5Minutes': getTop3UsersLast5Minutes(messages)
     };
 }
 
@@ -100,6 +101,19 @@ function getMyMessagesCountLast5Minutes(username, messages) {
 }
 
 function getTop3UsersAllTime(messages) {
+    return getTopUsers(messages, 3);
+}
+
+function getTop3UsersLast5Minutes(messages) {
+    const matchTimestamp = Date.now() - 5 * 60 * 1000;
+    messages = _.filter(messages, function(o) {
+        return o.timestamp >= matchTimestamp;
+    });
+
+    return getTopUsers(messages, 3);
+}
+
+function getTopUsers(messages, number) {
     var result = _.chain(messages)
         .countBy("username")
         .pairs()
@@ -110,5 +124,5 @@ function getTop3UsersAllTime(messages) {
         })
         .value();
 
-    return result.slice(0, 3);
+    return result.slice(0, number);
 }
