@@ -18,9 +18,8 @@ $color-light-gray: #fafafa;
 }
 
 .chat-list {
+  margin: 0;
   padding: 5px 10px;
-  height: 400px;
-  overflow: auto;
 
   &__item {
     list-style: none;
@@ -35,6 +34,8 @@ $color-light-gray: #fafafa;
     background-color: $color-light-gray;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin: 15px 0;
+    height: 400px;
+    overflow: auto;
+    margin: 10px 0;
   }
 }

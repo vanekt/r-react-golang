@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import moment from 'moment'
 
 export default class MessageList extends React.Component {
@@ -6,6 +7,20 @@ export default class MessageList extends React.Component {
         super();
 
         this.renderMessageList = this.renderMessageList.bind(this);
+        this.shouldScrollBottom = false;
+    }
+
+    componentWillUpdate() {
+        var node = ReactDOM.findDOMNode(this);
+        this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+        console.log(this.shouldScrollBottom);
+    }
+
+    componentDidUpdate() {
+        if (this.shouldScrollBottom) {
+            var node = ReactDOM.findDOMNode(this);
+            node.scrollTop = node.scrollHeight;
+        }
     }
 
     render() {
@@ -36,7 +51,7 @@ export default class MessageList extends React.Component {
     }
 
     getDateBlock(timestamp) {
-        let dateStr = moment(timestamp).format('h:mm:ss');
+        let dateStr = moment(timestamp).format('hh:mm:ss');
 
         return <span className="chat-list__item__datetime">[{dateStr}]</span>
     }
