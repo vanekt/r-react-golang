@@ -3,3 +3,4 @@
 - `npm install`
 - `cd src/backend && node index.js` for run backend part 
 - `npm start` for run frontend part: [http://localhost:8080/]()
+- Use any login and password
