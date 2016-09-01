@@ -4,6 +4,7 @@ import LoginView from './login'
 import ChatView from './chat'
 import emitter from './common/emitter'
 import WS from './common/ws'
+import './style.scss'
 
 class App extends React.Component {
     constructor() {
