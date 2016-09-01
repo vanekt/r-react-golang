@@ -1,13 +1,16 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 export default class LoginView extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            username: ''
+            username: '',
+            password: ''
         };
 
+        this.passwordInput = null;
         this.handleUsername = this.handleUsername.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
@@ -18,7 +21,10 @@ export default class LoginView extends React.Component {
 
     handleFormSubmit(e) {
         e.preventDefault();
-        this.props.loginCallback(this.state.username);
+        if (this.state.username.length > 0) {
+            var passwordNode = ReactDOM.findDOMNode(this.passwordInput);
+            this.props.loginCallback(this.state.username, passwordNode.value);
+        }
     }
 
     render() {
@@ -39,6 +45,16 @@ export default class LoginView extends React.Component {
                                 placeholder="Enter your name"
                                 value={this.state.username}
                                 onChange={this.handleUsername}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                className="form-control"
+                                id="password"
+                                type="password"
+                                ref={(ref) => this.passwordInput = ref}
+                                placeholder="Enter your password"
                             />
                         </div>
                         <button type="submit" className="btn btn-default">Log in</button>

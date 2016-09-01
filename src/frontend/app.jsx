@@ -27,9 +27,10 @@ class App extends React.Component {
         this.setState({username: username}, () => this._wsInit());
     }
 
-    loginCallback(username) {
+    loginCallback(username, password) {
         emulatePostJSON('/api/login', {
-            username: username
+            username: username,
+            password: password
         }).then(
             response => {
                 this.setState({username: response.token}, () => {
